@@ -5,6 +5,8 @@
 import React, { Component } from 'react';
 import { Button, ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView, StackNavigator, TabNavigator } from 'react-navigation';
+import firebase from 'react-native-firebase';
+
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -62,6 +64,30 @@ const StackNav = StackNavigator({
 });
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.unsubscriber = null;
+    this.state = {
+      user: null,
+    };
+  }
+
+  /**
+   * Listen for any auth state changes and update component state
+   */
+  componentDidMount() {
+    this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
+      this.setState({ user });
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscriber) {
+      this.unsubscriber();
+    }
+  }
+
   render() {
     return <StackNav navigation={this.props.navigation}/>;
   }

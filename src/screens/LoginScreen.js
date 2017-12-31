@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { Icon } from 'native-base';
+import { Button, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+
 import {SafeAreaView, StackNavigator, TabNavigator, NavigationActions} from 'react-navigation';
 import HomeScreen from './HomeScreen'
 
@@ -33,19 +33,34 @@ const styles = StyleSheet.create({
 // });
 
 const LoginScreen = ({ navigation }) => (
-  <View style={styles.container}>
-    <Text style={styles.welcome}>
-      Screen A
-    </Text>
-    <Text style={styles.instructions}>
-      This is great
-    </Text>
-    <Button
-      onPress={() => navigation.dispatch({type: 'Navigation/RESET', index: 0, actions: [{ type: 'Navigate', routeName:'Root'}]})
-      }
-      title="Log in"
-    />
-  </View>
+
+  <Container style={{backgroundColor: '#F5FCFF'}}>
+        <Content>
+          <Form>
+            <Item floatingLabel>
+              <Label>Username</Label>
+              <Input />
+            </Item>
+            <Item floatingLabel>
+              <Label>Password</Label>
+              <Input />
+            </Item>
+          </Form>
+        </Content>
+      </Container>
+  // <View style={styles.container}>
+  //   <Text style={styles.welcome}>
+  //     Screen A
+  //   </Text>
+  //   <Text style={styles.instructions}>
+  //     This is great
+  //   </Text>
+  //   <Button
+  //     onPress={() => navigation.dispatch({type: 'Navigation/RESET', index: 0, actions: [{ type: 'Navigate', routeName:'Root'}]})
+  //     }
+  //     title="Log in"
+  //   />
+  // </View>
 );
 
 
