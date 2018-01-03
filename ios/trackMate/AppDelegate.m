@@ -11,6 +11,7 @@
 #import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "RNHyperTrack.h"
 
 @implementation AppDelegate
 
@@ -31,8 +32,27 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [HyperTrack registerForNotifications];
   [FIRApp configure];
   return YES;
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken{
+
+    [HyperTrack didRegisterForRemoteNotificationsWithDeviceTokenWithDeviceToken:deviceToken];
+}
+
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(nonnull NSError *)error{
+
+    [HyperTrack didFailToRegisterForRemoteNotificationsWithErrorWithError:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    if ([HyperTrack isHyperTrackNotificationWithUserInfo:userInfo]){
+        [HyperTrack didReceiveRemoteNotificationWithUserInfo:userInfo];
+    }
+
+    // Additional handling for RCTPushNotificationManager
 }
 
 @end

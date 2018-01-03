@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Container, Header, Content, Form, Item, Input, Label, Button, Text, H1 } from 'native-base';
+import LogOut from '../component/LogOut'
+import CurrentLocation from '../component/CurrentLocation'
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -17,9 +22,13 @@ const styles = StyleSheet.create({
 
 const ProfileScreen = () => (
   <View style={styles.container}>
-    <Text style={styles.welcome}>
+    <H1>
       Profile Screen
-    </Text>
+    </H1>
+    <CurrentLocation />
+    <LogOut />
+
+
   </View>
 );
 

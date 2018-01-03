@@ -1,4 +1,8 @@
 PODS:
+  - Alamofire (4.6.0)
+  - CocoaLumberjack/Default (3.3.0)
+  - CocoaLumberjack/Swift (3.3.0):
+    - CocoaLumberjack/Default
   - Firebase/Auth (4.8.0):
     - Firebase/Core
     - FirebaseAuth (= 4.4.1)
@@ -48,6 +52,12 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
   - GTMSessionFetcher/Core (1.1.12)
+  - GzipSwift (4.0.4)
+  - HyperTrack (0.4.72):
+    - Alamofire (>= 4.4.0)
+    - CocoaLumberjack/Swift
+    - GzipSwift
+    - SQLite.swift (= 0.11.2)
   - leveldb-library (1.20)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -55,14 +65,20 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.5.0)
+  - SQLite.swift (0.11.2):
+    - SQLite.swift/standard (= 0.11.2)
+  - SQLite.swift/standard (0.11.2)
 
 DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/RemoteConfig
+  - HyperTrack
 
 SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  CocoaLumberjack: 3c8c74683302f9012bb168e1c4b7ae3c0b558431
   Firebase: 710decbbc6d9d48530e9a5dba3209740c3532e05
   FirebaseABTesting: d07d0ee833b842d5153549e4c7e2e2cb1c23a3f9
   FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
@@ -73,10 +89,13 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfig: 451fe8e9c43ac1e7a137ad2a42189bfc8c2c3ebc
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
+  GzipSwift: 1a5bc5f7827e09846b0635b5079f1224bc3b1c3a
+  HyperTrack: 162ae04204e32a5ebf32e0affbb05a013fc08ea8
   leveldb-library: '08cba283675b7ed2d99629a4bc5fd052cd2bb6a5'
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
 
-PODFILE CHECKSUM: 7371061e7fd91afaf5fe1774f73faf413d8f87f0
+PODFILE CHECKSUM: 4d93390d1a73df215a23b410ad98aa40bf253283
 
 COCOAPODS: 1.2.0
