@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Button, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Alert } from 'react-native';
+import firebase from 'react-native-firebase';
 
-import {SafeAreaView, StackNavigator, TabNavigator, NavigationActions} from 'react-navigation';
 import HomeScreen from './HomeScreen'
 
-import { Container, Header, Content, Form, Item, Input, Label } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Label, Button, Text } from 'native-base';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,56 +21,65 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// const {navigation} = this.props.navigation;
-
-// const resetAction = NavigationActions.reset({
-//   index: 0,
-//   actions: [
-//     NavigationActions.navigate({ routeName: 'Root' }),
-//     NavigationActions.navigate({ routeName: 'LoginScreen' }),
-//   ],
-// });
-
-const LoginScreen = ({ navigation }) => (
-
-  <Container style={{backgroundColor: '#F5FCFF'}}>
-        <Content>
-          <Form>
-            <Item floatingLabel>
-              <Label>Username</Label>
-              <Input />
-            </Item>
-            <Item floatingLabel>
-              <Label>Password</Label>
-              <Input />
-            </Item>
-          </Form>
-        </Content>
-      </Container>
-  // <View style={styles.container}>
-  //   <Text style={styles.welcome}>
-  //     Screen A
-  //   </Text>
-  //   <Text style={styles.instructions}>
-  //     This is great
-  //   </Text>
-  //   <Button
-  //     onPress={() => navigation.dispatch({type: 'Navigation/RESET', index: 0, actions: [{ type: 'Navigate', routeName:'Root'}]})
-  //     }
-  //     title="Log in"
-  //   />
-  // </View>
-);
+let email, password = '';
 
 
-// dispatch({type: 'Reset', index: 0, actions: [{ type: 'Navigate', routeName:'Home'}]})
-// LoginScreen.propTypes = {
-//     navigation: PropTypes.object.isRequired,
-//   };
+
+
+export default class LoginScreen extends Component { 
+  constructor(props){
+    super();
+    this.unsubscribe = {};
+    this.state = {
+      email: '',
+      password: '',
+      secureTextEntry: true
+    };
+  }
+
+  onLogin = () => {
+    if(this.state.email != '' && this.state.password != ''){
+     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((user) => {
+        console.log('User signin success');
+      })
+      .catch((err) => {
+        console.log(err);
+        // Alert.alert('Check mail!','Incorrent SignIn Credentials');
+      });
+    } else {
+      // Alert.alert("Oops!","Please check your username/password.")
+    }
+  }
+
+  render() { 
+    return (
+      <Container style={{backgroundColor: '#F5FCFF'}}>
+      <Content>
+        <Form>
+          <Item floatingLabel>
+            <Label>Username</Label>
+            <Input onChangeText={(email) => {this.setState({email})}} keyboardType={'email-address'} autoCapitalize={'none'}/>
+          </Item>
+          <Item floatingLabel>
+            <Label>Password</Label>
+            <Input secureTextEntry onChangeText={(password) => {this.setState({password})}}/>
+          </Item>
+        </Form>
+        <Button bordered style={{alignSelf: 'center', marginTop: 20, width: '90%', justifyContent:'center'}}
+          onPress={(email, password) => this.onLogin()}>
+          <Text>Log in</Text>
+        </Button>
+      </Content>
+    </Container>
+    )
+  }
+
+}
+
+
 
 LoginScreen.navigationOptions = {
   title: 'Log In',
 };
 
-export default LoginScreen;
