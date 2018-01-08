@@ -3,9 +3,11 @@
  */
 
 import React, { Component } from 'react';
-import { Button, ScrollView, NativeModules,NativeEventEmitter } from 'react-native';
+import { Button, ScrollView, NativeModules,NativeEventEmitter, Alert } from 'react-native';
 import { SafeAreaView, StackNavigator, TabNavigator } from 'react-navigation';
 import firebase from 'react-native-firebase';
+import Mapbox from '@mapbox/react-native-mapbox-gl';
+
 
 
 import HomeScreen from './src/screens/HomeScreen';
@@ -22,8 +24,11 @@ const locationEmitter = new NativeEventEmitter(RNHyperTrack);
 
 const subscription = locationEmitter.addListener(
   'location.changed',
-  (event) => console.log(event.geojson)
 );
+
+var DeviceInfo = require('react-native-device-info');
+var uid = DeviceInfo.getUniqueID();
+var getDeviceName = DeviceInfo.getDeviceName();
 
 const TabNav = TabNavigator(
   {
@@ -83,12 +88,43 @@ class App extends Component {
       user: null,
     };
     RNHyperTrack.initialize('pk_test_6b8e7439a5cb031f03b3771e1bd822e10a400d94');
+    Mapbox.setAccessToken('pk.eyJ1IjoiZHVyZ2FwcmFzYWQ4MTQiLCJhIjoiY2pia2gzbnpoMzB0ZzJxbHAzejJoYm53ciJ9.kQgl-u3sv0Ih0CNBYIkm1A');
   }
 
   /**
    * Listen for any auth state changes and update component state
    */
   componentDidMount() {
+
+              // Call this method to check location authorization status.
+              RNHyperTrack.locationAuthorizationStatus().then((status) => {
+                // Handle locationAuthorizationStatus API promise here
+                console.log('locationAuthorizationStatus: ', status);
+                RNHyperTrack.requestLocationAuthorization("title", "message");
+              });
+        
+              // Call this method to check location services are enabled or not.
+              RNHyperTrack.locationServicesEnabled().then(
+                (callback) => {
+                  // Handle locationServicesEnabled API callback here
+                  console.log('locationServicesEnabled: ', callback);
+                  if(!callback) {
+                  Alert.alert("Alert, Enable Location Service","Please enable location services")                    
+                  }
+                }
+              );
+        
+              // Call this method to check if Motion Activity API is available on the device
+              // NOTE: Motion Authorization is required only for iOS. This API will return an error in Android.
+              RNHyperTrack.canAskMotionPermissions().then(
+                (callback) => {
+                  // Handle canAskMotionPermissions API callback here
+                  console.log('canAskMotionPermissions: ', callback);
+                  RNHyperTrack.requestMotionAuthorization();
+                }
+              );
+    
+
     this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
       
       if(user){
@@ -129,33 +165,6 @@ class App extends Component {
       }
       
     });
-
-          // Call this method to check location authorization status.
-          RNHyperTrack.locationAuthorizationStatus().then((status) => {
-            // Handle locationAuthorizationStatus API promise here
-            console.log('locationAuthorizationStatus: ', status);
-            RNHyperTrack.requestLocationAuthorization("title", "message");
-          });
-    
-          // Call this method to check location services are enabled or not.
-          RNHyperTrack.locationServicesEnabled().then(
-            (callback) => {
-              // Handle locationServicesEnabled API callback here
-              console.log('locationServicesEnabled: ', callback);
-
-            }
-          );
-    
-          // Call this method to check if Motion Activity API is available on the device
-          // NOTE: Motion Authorization is required only for iOS. This API will return an error in Android.
-          RNHyperTrack.canAskMotionPermissions().then(
-            (callback) => {
-              // Handle canAskMotionPermissions API callback here
-              console.log('canAskMotionPermissions: ', callback);
-              RNHyperTrack.requestMotionAuthorization();
-            }
-          );
-
   }
 
   componentWillUnmount() {
@@ -173,5 +182,16 @@ class App extends Component {
 export default App;
 
 
+
+
+// Todo: 
+// 1 Need to create Forgot password page.
+// 2 Add forgot password to StackNav
+// 3 create db with user, team info, is_manager. If is_manager == true, then dont track.
+// 4 write hypertrack  id to user db.
+// 5 extract current location using id from rest api https://docs.hypertrack.com/gettingstarted/location.html
+// 6 extract placeline for user. 
+// 7 set intial bounds of the map based on team info.
+// 
 
 

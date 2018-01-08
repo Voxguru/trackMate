@@ -5,7 +5,7 @@ import firebase from 'react-native-firebase';
 import PropTypes from 'prop-types';
 
 
-import { Container, Header, Content, Form, Item, Input, Label, Button, Text } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Label, Button, Text, Icon } from 'native-base';
 
 
 const styles = StyleSheet.create({
@@ -20,30 +20,34 @@ const styles = StyleSheet.create({
   },
 });
 
+
 loc = () => {
-    var RNHyperTrack = NativeModules.RNHyperTrack;
-    RNHyperTrack.getCurrentLocation().then((success) => {
-        // Handle getCurrentLocation API success here
-        console.log('getCurrentLocation success: ', success)
-    }, (error) => {
-        // Handle getCurrentLocation API error here
-        console.log('getCurrentLocation error: ', error)
-    })
+  var RNHyperTrack = NativeModules.RNHyperTrack;
+  
+  RNHyperTrack.getCurrentLocation().then((success) => {
+    // Handle getCurrentLocation API success here
+    console.log('getCurrentLocation success: ', success)
+    currentLoc = [success.latitude, success.longitude];
+}, (error) => {
+    // Handle getCurrentLocation API error here
+    console.log('getCurrentLocation error: ', error)
+})
 }
 
     
 
 
 const CurrentLocations = ({ loc }) => (
-    <Button bordered style={{alignSelf: 'center', marginTop: 20, width: '90%', justifyContent:'center'}}
-      onPress={()=>this.loc()}>
-      <Text>Current Location</Text>
+    <Button bordered style={{alignSelf: 'center', marginTop: 20, width: '10%', justifyContent:'center',}}
+      onPress={()=>loc()}>
+     <Icon name='locate' style={{fontSize: 30, color: 'red'}} />
     </Button>
 
 );
 
-CurrentLocations.propTypes = {
-  };
+// CurrentLocations.propTypes = {
+//   loc: PropTypes.func.isRequired
+//   };
 
 
 export default CurrentLocations;
